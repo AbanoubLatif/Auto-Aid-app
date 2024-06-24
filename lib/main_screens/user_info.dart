@@ -7,29 +7,19 @@ import '../widgets/custom_icon_back.dart';
 import '../widgets/custom_textfield.dart';
 
 class UserInfo extends StatelessWidget {
-   UserInfo({Key? key}) : super(key: key);
+   const UserInfo({Key? key}) : super(key: key);
   static String id='UserInfoPage';
-
-  // قائمة النصوص التي ترغب في إظهارها في CustomTextField
-  final List<String> textFieldLabels = [
-    'User name',
-    'Old password',
-    'New password',
-    'Confirm password',
-    'Change email',
-    'Your avg daily mileage',
-  ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CustomIconBack(),
-            const Padding(
+            CustomIconBack(),
+            Padding(
               padding: EdgeInsets.only(top: 10, left: 40),
               child: Text(
                 'User name',
@@ -41,30 +31,25 @@ class UserInfo extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
+              padding: EdgeInsets.only(top: 10, right: 20, left: 20),
               child: CustomContainer(
-                height: 470,
-                column: Column(
+                child: Column(
                   children: [
-                    // استخدم ListView.builder لإنشاء CustomTextField بناءً على القائمة textFieldLabels
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: textFieldLabels.length,
-                        itemBuilder: (context, index) {
-                          // استخدم عنصر القائمة في كل CustomTextField
-                          return Padding(
-                            padding:  EdgeInsets.only(
-                              right: 40,
-                              bottom: index == textFieldLabels.length - 1 ? 0 : 15, // لتجنب إضافة padding إضافي في العناصر غير الأخيرة
-                            ),
-                            child: CustomTextField(text: textFieldLabels[index]),
-                          );
-                        },
-                      ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: CustomTextField(text: 'New User Name'),
                     ),
-
-                    const Padding(
+                    Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: CustomTextField(text: 'New Email'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: CustomTextField(text: 'New Password'),
+                    ),
+                    Padding(
                       padding: EdgeInsets.only(
+                        top: 20,
                         bottom: 15,
                         right: 110,
                         left: 110,

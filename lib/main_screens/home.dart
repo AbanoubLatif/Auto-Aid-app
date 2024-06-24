@@ -1,7 +1,7 @@
 import 'package:auto_aid/constants.dart';
 import 'package:auto_aid/main_screens/account_settings.dart';
-import 'package:auto_aid/main_screens/add_car.dart';
 import 'package:auto_aid/main_screens/ai-chatbot.dart';
+import 'package:auto_aid/main_screens/google_map.dart';
 import 'package:auto_aid/main_screens/main_page.dart';
 import 'package:auto_aid/main_screens/service_book.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -18,11 +18,11 @@ class HomeState extends State<Home> {
   late double iconSize;
 
   final List<Widget> screens = [
-  const AddCar(),
+  const GoogleMapScreen(),
   const AiChatBot(),
   const MainPage(),
   const ServiceBook(),
-  const AccountSettings(),
+   AccountSettings(),
 ];
 
   @override
@@ -45,8 +45,7 @@ class HomeState extends State<Home> {
         buttonBackgroundColor: KeySecondaryColor,
         color: KeyPrimaryColor,
         items: [
-          // Icon(Icons.map,color: Colors.white,size: iconSize,),
-          Image(image: const AssetImage('assets/images/map logo.png'), height: iconSize, width: iconSize),
+          Image(image: const AssetImage('assets/images/3 1.png'), height: iconSize, width: iconSize),
           Image(image: const AssetImage('assets/images/boot_icon.png'), height: iconSize, width: iconSize),
           Image(image: const AssetImage('assets/images/home_icon.png'), height: iconSize, width: iconSize),
           Image(image: const AssetImage('assets/images/service_icon.png'), height: iconSize, width: iconSize),

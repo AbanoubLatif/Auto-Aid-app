@@ -13,11 +13,11 @@ class OpenAIService {
       'Authorization': 'Bearer $apiKey',
     };
     final body = jsonEncode({
-      'model': 'gpt-4',
+      'model': 'ft:gpt-3.5-turbo-0125:personal:autoaid-diagnostic:9cRLIMnx',
       'messages': [
         {'role': 'user', 'content': message}
       ],
-      'max_tokens': 150,
+      'max_tokens': 1000,
     });
 
     try {

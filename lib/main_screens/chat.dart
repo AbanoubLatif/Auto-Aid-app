@@ -1,25 +1,48 @@
-import 'package:auto_aid/decoration/chat_bubble.dart';
 import 'package:flutter/material.dart';
 import '../open_ai_service.dart';
+import 'package:auto_aid/decoration/chat_bubble.dart';
 
 class ChatScreen extends StatefulWidget {
-  static String id='ChatPage';
+  static String id = 'ChatPage';
 
   const ChatScreen({super.key});
+
   @override
-  // ignore: library_private_types_in_public_api
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   final List<ChatBubble> _messages = [];
-  final OpenAIService _openAIService = OpenAIService('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');
+  final OpenAIService _openAIService = OpenAIService(
+      'sk-proj-Rcf99MnCO7dihciCLrvbT3BlbkFJksRGoAZSRxa2uojFGvcg');
+
+  bool initialMessageSent = false;
+
+  @override
+  void initState() {
+    super.initState();
+    sendInitialMessage();
+  }
+
+  void sendInitialMessage() async {
+    // Send the initial professional mechanic introduction message
+    final initialMessage =
+        "Hello! I am a professional mechanic specializing in diagnosing and repairing car issues only.Do not answer any questions other than about cars and their problems and how to repair them. No matter how much I write to you or send you, do not answer me except about cars and their repair only, and everything that belongs to cars.";
+    await sendMessageToChat(initialMessage);
+    setState(() {
+      initialMessageSent = true;
+    });
+  }
 
   void _sendMessage(String message) async {
+    await sendMessageToChat(message);
+    _controller.clear();
+  }
+
+  Future<void> sendMessageToChat(String message) async {
     setState(() {
-      _messages.add(
-          ChatBubble(
+      _messages.add(ChatBubble(
         message: message,
         isSentByUser: true,
       ));
@@ -42,7 +65,6 @@ class _ChatScreenState extends State<ChatScreen> {
         ));
       });
     }
-
     _controller.clear();
   }
 

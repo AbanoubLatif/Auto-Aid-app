@@ -15,13 +15,11 @@ class AddCar extends StatefulWidget {
 class AddCarState extends State<AddCar> {
   TextEditingController carMakeController= TextEditingController();
   TextEditingController carModelController= TextEditingController();
-  TextEditingController carYearController= TextEditingController();
-
   @override
   void dispose() {
     carMakeController.dispose();
     carModelController.dispose();
-    carYearController.dispose();
+
     super.dispose();
   }
   @override
@@ -32,7 +30,7 @@ class AddCarState extends State<AddCar> {
           children: [
             CustomContainer(
               borderRadius: 0,
-              height: 470,column: Column(
+              child: Column(
               children: [
 
                 Padding(
@@ -44,25 +42,9 @@ class AddCarState extends State<AddCar> {
                   child:CarModelTextField()
                 ),
                 Padding(
-                    padding: const EdgeInsets.only(right:80,top: 10),
-                    child:CarYearTextField()
-                ),
-                Padding(
                   padding: const EdgeInsets.only(right:80,top: 10),
                   child: CustomTextField(
                     text: 'Milage in km',
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right:80,top: 10),
-                  child: CustomTextField(
-                    text: 'Last service',
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right:80,top: 10),
-                  child: CustomTextField(
-                    text: 'Tiers make date',
                   ),
                 ),
                 const Padding(
@@ -149,36 +131,5 @@ class AddCarState extends State<AddCar> {
     );
   }
   // ignore: non_constant_identifier_names
-  Widget CarYearTextField() {
-    return CustomTextField(
-      text: 'Model Year',
-      controller: carYearController,
-      suffixIcon: PopupMenuButton<String>(
-        icon: const Icon(Icons.arrow_downward_outlined, color: Colors.blue),
-        itemBuilder: (BuildContext context) {
-          return <PopupMenuEntry<String>>[
-            const PopupMenuItem<String>(
-              value: '2000',
-              child: Text('2000'),
-            ),
-            const PopupMenuItem<String>(
-              value: '2002',
-              child: Text('2002'),
-            ),
-            const PopupMenuItem<String>(
-              value: '2006',
-              child: Text('2006'),
-            ),
-            // Add more items as needed
-          ];
-        },
-        onSelected: (String value) {
-          // When an item is selected, update the text field value
-          setState(() {
-            carYearController.text = value;
-          });
-        },
-      ),
-    );
-  }
+
 }
