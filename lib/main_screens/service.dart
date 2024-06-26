@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:auto_aid/constants.dart';
@@ -32,7 +31,7 @@ class _ServicePageState extends State<ServicePage> {
   }
 
   Future<void> fetchMaintenanceData() async {
-    final storage = const FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     final data = await storage.read(key: 'maintenance_data');
 
     if (data != null) {
@@ -63,7 +62,7 @@ class _ServicePageState extends State<ServicePage> {
                         const Padding(
                           padding: EdgeInsets.only(top: 25),
                           child: Text(
-                            'Next Service:                        ',
+                            'Current Service:                           ',
                             style: TextStyle(
                               fontSize: 23,
                               color: Colors.white,
@@ -360,7 +359,11 @@ class _ServicePageState extends State<ServicePage> {
                                 ),
 
                               // Add more conditions for other maintenance items
-                              const SizedBox(height: 10),
+                              const SizedBox(height: 20),
+                              Text('Note:   The remaining parts             must be inspected by a specialist',
+                              style: textStyle,
+                              ),
+                              const SizedBox(height: 20),
                             ],
                           );
                         }).toList(),

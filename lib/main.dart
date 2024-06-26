@@ -32,13 +32,13 @@ class AutoAid extends StatelessWidget {
         ServiceBook.id:(context)=>const ServiceBook(),
         ServicePage.id:(context)=>const ServicePage(),
         AiChatBot.id:(context)=>const AiChatBot(),
-        AddCar.id:(context)=>const AddCar(),
-        AccountSettings.id:(context)=> AccountSettings(),
-        UserInfo.id:(context)=>UserInfo(),
+        AddCarScreen.id:(context)=>const AddCarScreen(),
+        AccountSettings.id:(context)=> const AccountSettings(),
+        UserInfo.id:(context)=>const UserInfo(),
         ChatScreen.id:(context)=>  const ChatScreen(),
         Home.id:(context)=>const Home(),
         MainPage.id:(context)=>const MainPage(),
-        GoogleMapScreen.id:(context)=>const GoogleMapScreen()
+        GoogleMapScreen.id:(context)=> const GoogleMapScreen()
       },
       initialRoute:'FirstScreen',
     );

@@ -6,7 +6,8 @@ class CustomTextField extends StatefulWidget {
   final TextEditingController? controller;
   final Function(String)? onChange;
   final String? Function(String?)? validator;
-  final bool obscureText; // إضافة خاصية للسماح بإظهار وإخفاء كلمة المرور
+  final bool obscureText; // خاصية للسماح بإظهار وإخفاء كلمة المرور
+  final TextInputType? keyboardType; // خاصية لتحديد نوع لوحة المفاتيح
 
   const CustomTextField({
     Key? key,
@@ -16,9 +17,11 @@ class CustomTextField extends StatefulWidget {
     this.onChange,
     this.validator,
     this.obscureText = false, // القيمة الافتراضية لـ obscureText هي false
+    this.keyboardType, // إضافة خاصية keyboardType
   }) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _CustomTextFieldState createState() => _CustomTextFieldState();
 }
 
@@ -49,6 +52,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             color: Colors.black, // لون النص داخل حقل النص
           ),
           validator: widget.validator,
+          keyboardType: widget.keyboardType, // تحديد نوع لوحة المفاتيح
           decoration: InputDecoration(
             filled: true, // تحديد ملء الخلفية
             fillColor: Colors.white, // لون الخلفية

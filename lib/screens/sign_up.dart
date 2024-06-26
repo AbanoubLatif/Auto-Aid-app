@@ -16,7 +16,7 @@ class SignUp extends StatefulWidget {
 }
 
 class SignUpState extends State<SignUp> {
-  bool isLoading=false;
+  bool isLoading = false;
   final formKey = GlobalKey<FormState>();
   final storage = const FlutterSecureStorage();
   TextEditingController nameController = TextEditingController();
@@ -26,15 +26,31 @@ class SignUpState extends State<SignUp> {
   TextEditingController carModelController = TextEditingController();
   TextEditingController carMileagesController = TextEditingController();
 
-
   Map<String, List<String>> carModels = {
-    'Kia': ['Cerato 2012-2017', 'Grand Cerato 2018-2023','Carens 2010-2013','Sportage 2012-2022','Rio 2010-2017','Sportage Turbo GDI 2022-2024','Picanto 2004-2017','Soul 2009-2017'],
-    'Hyundai': ['Tucson GDI 2017-2023', 'Accent RB 2011-2024','verna','Elantra MD','Elantra AD','Elantra HD','Accent HCI'],
+    'Kia': [
+      'Cerato 2012-2017',
+      'Grand Cerato 2018-2023',
+      'Carens 2010-2013',
+      'Sportage 2012-2022',
+      'Rio 2010-2017',
+      'Sportage Turbo GDI 2022-2024',
+      'Picanto 2004-2017',
+      'Soul 2009-2017'
+    ],
+    'Hyundai': [
+      'Tucson GDI 2017-2023',
+      'Accent RB 2011-2024',
+      'verna',
+      'Elantra MD',
+      'Elantra AD',
+      'Elantra HD',
+      'Accent HCI'
+    ],
     'Toyota': ['Corolla', 'Yaris'],
     'Nissan': ['Sunny', 'Patrol'],
-    'Chevrolet': ['Lanos', 'Optra','New Optra','Captiva','Curze','New Curze'],
-    'Mitsubishi': ['Eclipse', 'Lancer','Pajero'],
-    'Peugeot': ['208', '301','508'],
+    'Chevrolet': ['Lanos', 'Optra', 'New Optra', 'Captiva', 'Curze', 'New Curze'],
+    'Mitsubishi': ['Eclipse', 'Lancer', 'Pajero'],
+    'Peugeot': ['208', '301', '508'],
     'Renault': ['Logan', 'Megan'],
     'MG': ['MG5', 'MG6'],
   };
@@ -68,9 +84,8 @@ class SignUpState extends State<SignUp> {
     print('Request Headers: Content-Type: application/x-www-form-urlencoded');
     print('Request Body: $bodyData');
 
-    isLoading=true;
     setState(() {
-
+      isLoading = true;
     });
 
     final response = await http.post(
@@ -80,6 +95,10 @@ class SignUpState extends State<SignUp> {
       },
       body: bodyData,
     );
+
+    setState(() {
+      isLoading = false;
+    });
 
     print('Response Status Code: ${response.statusCode}');
     print('Response Body: ${response.body}');
@@ -130,10 +149,6 @@ class SignUpState extends State<SignUp> {
         ),
       );
     }
-    isLoading=false;
-    setState(() {
-
-    });
   }
 
   @override
@@ -182,6 +197,9 @@ class SignUpState extends State<SignUp> {
                         if (value == null || value.isEmpty) {
                           return 'This field is required';
                         }
+                        if (value.length < 6) {
+                          return 'Password must be at least 6 characters long';
+                        }
                         return null;
                       },
                     ),
@@ -199,9 +217,13 @@ class SignUpState extends State<SignUp> {
                     child: CustomTextField(
                       text: 'Car mileages',
                       controller: carMileagesController,
+                      keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'This field is required';
+                        }
+                        if (!RegExp(r'^\d+$').hasMatch(value)) {
+                          return 'Car mileages must be a number';
                         }
                         return null;
                       },
@@ -238,6 +260,7 @@ class SignUpState extends State<SignUp> {
       ),
     );
   }
+
   Widget CarMakeTextField() {
     return CustomTextField(
       text: 'Car Make',

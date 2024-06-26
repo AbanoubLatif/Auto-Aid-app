@@ -6,6 +6,7 @@ import 'package:auto_aid/widgets/custom_button.dart';
 import 'package:auto_aid/widgets/custom_textfield.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class ServiceBook extends StatefulWidget {
   const ServiceBook({Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ class ServiceBookState extends State<ServiceBook> {
   List<Map<String, String>> userCars = [];
   List<String> selectedCarModels = [];
 
+
   @override
   void initState() {
     super.initState();
@@ -37,8 +39,9 @@ class ServiceBookState extends State<ServiceBook> {
     super.dispose();
   }
 
+
   Future<void> fetchUserCars() async {
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
 
     if (token == null) {
@@ -46,7 +49,7 @@ class ServiceBookState extends State<ServiceBook> {
       return;
     }
 
-    final url = Uri.parse('https://autoaid-store.preview-domain.com/api/cars');
+    final url = Uri.parse('https://autoaid-store.preview-domain.com/api/user/cars');
     final response = await http.get(
       url,
       headers: {
@@ -75,6 +78,9 @@ class ServiceBookState extends State<ServiceBook> {
   }
 
   Future<void> handleConfirm() async {
+    setState(() {
+      isLoading=true;
+    });
     if (formKey.currentState?.validate() ?? false) {
       try {
         await sendCarMakeModel(carMakeController.text, carModelController.text);
@@ -84,10 +90,13 @@ class ServiceBookState extends State<ServiceBook> {
         _showErrorDialog('Failed to send car make and model. Please try again later.');
       }
     }
+    setState(() {
+      isLoading=false;
+    });
   }
 
   Future<void> sendCarMakeModel(String carMake, String carModel) async {
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
     final url =
     Uri.parse('https://autoaid-store.preview-domain.com/api/maintenance?car_make=$carMake&car_model=$carModel');
@@ -140,54 +149,58 @@ class ServiceBookState extends State<ServiceBook> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 180, left: 30, right: 30),
-              child: CustomContainer(
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(top: 20),
-                        child: Text(
-                          'Choose car to show its service book',
-                          style: TextStyle(
-                            fontSize: 30,
-                            color: KeyPrimaryColor,
-                            fontWeight: FontWeight.bold,
+    return ModalProgressHUD(
+      inAsyncCall: isLoading,
+      child: Scaffold(
+        body: ListView(
+          children: [Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 70, left: 30, right: 30),
+                child: CustomContainer(
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Text(
+                            'Choose car to show its service book',
+                            style: TextStyle(
+                              fontSize: 30,
+                              color: KeyPrimaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: CarMakeTextField(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: CarModelTextField(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30, left: 100, right: 100),
-                        child: CustomButton(
-                          height: 30,
-                          text: 'Confirm',
-                          color: KeyPrimaryColor,
-                          textcolor: Colors.white,
-                          onPressed: handleConfirm,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: CarMakeTextField(),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: CarModelTextField(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30, left: 100, right: 100),
+                          child: CustomButton(
+                            height: 30,
+                            text: 'Confirm',
+                            color: KeyPrimaryColor,
+                            textcolor: Colors.white,
+                            onPressed: handleConfirm,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).viewInsets.bottom), // Adjust the padding when the keyboard appears
-          ],
+              SizedBox(height: MediaQuery.of(context).viewInsets.bottom), // Adjust the padding when the keyboard appears
+            ],
+          ),
+      ]
         ),
       ),
     );

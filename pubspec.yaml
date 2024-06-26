@@ -33,7 +33,8 @@ dependencies:
     sdk: flutter
   http: ^0.13.4
   url_launcher: ^6.0.20
-  google_maps_flutter: ^2.7.0
+  google_maps_flutter: ^2.0.6
+  location: ^4.3.0
   flutter_bloc: ^8.1.2
   bloc: ^8.1.1
   flutter_secure_storage: ^5.0.2

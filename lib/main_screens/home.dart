@@ -18,11 +18,11 @@ class HomeState extends State<Home> {
   late double iconSize;
 
   final List<Widget> screens = [
-  const GoogleMapScreen(),
+   const GoogleMapScreen(),
   const AiChatBot(),
   const MainPage(),
   const ServiceBook(),
-   AccountSettings(),
+   const AccountSettings(),
 ];
 
   @override

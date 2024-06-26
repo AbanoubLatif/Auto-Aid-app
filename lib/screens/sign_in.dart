@@ -3,14 +3,13 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-
 import '../constants.dart';
 import '../decoration/custom_container.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_textfield.dart';
 
 class SignIn extends StatefulWidget {
-   SignIn({Key? key}) : super(key: key);
+  const SignIn({Key? key}) : super(key: key);
 
   static String id = 'SignInPage';
 
@@ -20,9 +19,9 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  bool isLoading=false;
+  bool isLoading = false;
   final formKey = GlobalKey<FormState>();
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -47,10 +46,10 @@ class _SignInState extends State<SignIn> {
     print('Request Headers: Content-Type: application/x-www-form-urlencoded');
     print('Request Body: $bodyData');
 
-    isLoading=true;
     setState(() {
-
+      isLoading = true;
     });
+
     final response = await http.post(
       url,
       headers: <String, String>{
@@ -58,6 +57,10 @@ class _SignInState extends State<SignIn> {
       },
       body: bodyData,
     );
+
+    setState(() {
+      isLoading = false;
+    });
 
     print('Response Status Code: ${response.statusCode}');
     print('Response Body: ${response.body}');
@@ -70,16 +73,21 @@ class _SignInState extends State<SignIn> {
         print('Login successful, token: $token');
         Navigator.pushNamed(context, 'HomePage'); // Navigate to HomePage on success
       } else {
-        print('Login failed: ${responseBody['message']}');
+        _showErrorMessage(responseBody['message']);
       }
     } else {
-      print('Request failed with status: ${response.statusCode}');
-      print('Response Body: ${response.body}');
+      _showErrorMessage('Login failed. Please check your email and password.');
     }
-    isLoading=false;
-    setState(() {
+  }
 
-    });
+  void _showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 3),
+      ),
+    );
   }
 
   @override
@@ -126,7 +134,7 @@ class _SignInState extends State<SignIn> {
                     Padding(
                       padding: const EdgeInsets.only(left: 30, right: 30, bottom: 240),
                       child: CustomContainer(
-                         child: Column(
+                        child: Column(
                           children: [
                             const SizedBox(height: 45),
                             CustomTextField(
@@ -157,7 +165,6 @@ class _SignInState extends State<SignIn> {
                               child: CustomButton(
                                 height: 30,
                                 text: 'Login',
-                                // navigateTo: 'HomePage',
                                 color: KeyPrimaryColor,
                                 textcolor: Colors.white,
                                 formKey: formKey,
